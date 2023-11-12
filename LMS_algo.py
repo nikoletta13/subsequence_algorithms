@@ -1,5 +1,7 @@
 """
-Calculate longest monotone subsequence (LMS).
+Calculates longest monotone subsequence (LMS). At the end these algorithms are used to determine
+an upper bound for L(N):=Lowest Upper Bound for number of mutually exclusive subsequences for a 
+sequence of N distinct numbers.
 """
 from itertools import permutations
 from sympy import factorial
@@ -30,22 +32,16 @@ def LIS(l):
         if l[i]>best_seqs_dict[newL][-1]:
             newL+=1 # new longest subseq
             best_seqs_dict[newL] = best_seqs_dict[newL-1] + [l[i]] # create it
-            print('appended to longest')
-            input(best_seqs_dict)
         else:
             for j in range(newL,0,-1):
                 if j>1:
                     if l[i]<best_seqs_dict[j][-1] and l[i]>best_seqs_dict[j-1][-1]:
                         best_seqs_dict[j] = best_seqs_dict[j-1] + [l[i]]
-                        input('replaced a not best')
-                        print(best_seqs_dict)
                         break
                 else:
                     if l[i]<best_seqs_dict[1][0]: # if it does get to this then this is trivially satisfied
                         best_seqs_dict[1] = [l[i]]    
-                        print('replaced 1')
-                        input(best_seqs_dict)
-    return best_seqs_dict                    
+    return best_seqs_dict[max(best_seqs_dict)]                  
 
 
 
@@ -72,33 +68,21 @@ def LDS(l):
         if l[i]<best_seqs_dict[newL][-1]:
             newL+=1 # new longest subseq
             best_seqs_dict[newL] = best_seqs_dict[newL-1] + [l[i]] # create it
-            print('appended to longest')
-            input(best_seqs_dict)
         else:
             for j in range(newL,0,-1):
                 if j>1:
                     if l[i]>best_seqs_dict[j][-1] and l[i]<best_seqs_dict[j-1][-1]:
                         best_seqs_dict[j] = best_seqs_dict[j-1] + [l[i]]
-                        input('replaced a not best')
-                        print(best_seqs_dict)
                         break
                 else:
                     if l[i]>best_seqs_dict[1][0]: # if it does get to this then this is trivially satisfied
                         best_seqs_dict[1] = [l[i]]    
-                        print('replaced 1')
-                        input(best_seqs_dict)
-    return best_seqs_dict     
+    return best_seqs_dict[max(best_seqs_dict)]   
 
 
 
 
 
-l = [0,8,4,12,2,10,6,14,1,9,5,13,3,11,7,15]
-
-print(LIS(l))
-print(LIS_new(l))
-
-input('asdgf')
 
 def LMS(l):
     """
@@ -122,14 +106,16 @@ def LMS(l):
     #         return I[i_max], 'I'
 
 
+###################################################
+# Apply to qn about The Game
+###################################################
+
 
 def monotone_subseq(l):
     """
     Given a list l, return subsequences. eventually make this smarter
     """
-    n = len(l)
     subseqs = []
-    removed_from_l = []
     f_l = l
     # D_count = 0
     # I_count = 0
@@ -178,7 +164,7 @@ def M_N(n):
 
 
 
-print(M_N(12))
+# print(M_N(12))
 
 # deck = [x for x in range(2,100)]
 
