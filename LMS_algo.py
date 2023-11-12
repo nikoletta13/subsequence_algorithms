@@ -6,6 +6,7 @@ from sympy import factorial
 from random import shuffle, randint, sample
 
 
+
 def LIS(l):
     """
     Find the longest increasing subsequence of l using the algorithm 
@@ -24,24 +25,27 @@ def LIS(l):
     L=0
     best_seqs_dict = {}
     best_seqs_dict[1] = [l[0]] 
-    for i in range(1,n): # checks entries
-        for j in range(1,newL+1): # checks lengths
-            if j<newL:    
-                if newL>1:
-                    if j>1 and l[i]<best_seqs_dict[j][-1] and l[i]>best_seqs_dict[j][-2]: # if this number is smaller than the last digit of any of the previously best seqs, replace it
-                        best_seqs_dict[j][-1]=l[i]
-                    elif l[i]>best_seqs_dict[j][-1] and l[i]<best_seqs_dict[j+1][-1]:
-                        best_seqs_dict[j+1]= best_seqs_dict[j]+ [l[i]]
-            else:        
-                if newL>1:
-                    if l[i]<best_seqs_dict[newL][-1] and l[i]>best_seqs_dict[newL][-2]:
-                        best_seqs_dict[newL][-1] = l[i]
-                if l[i]>best_seqs_dict[newL][-1]:
-                    best_seqs_dict[newL+1] = best_seqs_dict[newL]+[l[i]]
-                    newL+=1
-    if len(best_seqs_dict.values())==1:
-        return list(best_seqs_dict.values())[0]
-    return best_seqs_dict[max(best_seqs_dict)]
+    for i in range(2,n):
+        # check if c_i can be appended to the longest existing subseq
+        if l[i]>best_seqs_dict[newL][-1]:
+            newL+=1 # new longest subseq
+            best_seqs_dict[newL] = best_seqs_dict[newL-1] + [l[i]] # create it
+            print('appended to longest')
+            input(best_seqs_dict)
+        else:
+            for j in range(newL,0,-1):
+                if j>1:
+                    if l[i]<best_seqs_dict[j][-1] and l[i]>best_seqs_dict[j-1][-1]:
+                        best_seqs_dict[j] = best_seqs_dict[j-1] + [l[i]]
+                        input('replaced a not best')
+                        print(best_seqs_dict)
+                        break
+                else:
+                    if l[i]<best_seqs_dict[1][0]: # if it does get to this then this is trivially satisfied
+                        best_seqs_dict[1] = [l[i]]    
+                        print('replaced 1')
+                        input(best_seqs_dict)
+    return best_seqs_dict                    
 
 
 
@@ -63,24 +67,38 @@ def LDS(l):
     L=0
     best_seqs_dict = {}
     best_seqs_dict[1] = [l[0]] 
-    for i in range(1,n): # checks entries
-        for j in range(1,newL+1): # checks lengths
-            if j<newL:    
-                if newL>1:
-                    if j>1 and l[i]>best_seqs_dict[j][-1] and l[i]<best_seqs_dict[j][-2]: # if this number is smaller than the last digit of any of the previously best seqs, replace it
-                        best_seqs_dict[j][-1]=l[i]
-                    elif l[i]<best_seqs_dict[j][-1] and l[i]>best_seqs_dict[j+1][-1]:
-                        best_seqs_dict[j+1]= best_seqs_dict[j]+ [l[i]]
-            else: 
-                if newL>1:       
-                    if l[i]>best_seqs_dict[newL][-1] and l[i]<best_seqs_dict[newL][-2]:
-                        best_seqs_dict[newL][-1] = l[i]
-                if l[i]<best_seqs_dict[newL][-1]:
-                    best_seqs_dict[newL+1] = best_seqs_dict[newL]+[l[i]]
-                    newL+=1
-    if len(best_seqs_dict.values())==1:
-        return list(best_seqs_dict.values())[0]
-    return best_seqs_dict[max(best_seqs_dict)]
+    for i in range(2,n):
+        # check if c_i can be appended to the longest existing subseq
+        if l[i]<best_seqs_dict[newL][-1]:
+            newL+=1 # new longest subseq
+            best_seqs_dict[newL] = best_seqs_dict[newL-1] + [l[i]] # create it
+            print('appended to longest')
+            input(best_seqs_dict)
+        else:
+            for j in range(newL,0,-1):
+                if j>1:
+                    if l[i]>best_seqs_dict[j][-1] and l[i]<best_seqs_dict[j-1][-1]:
+                        best_seqs_dict[j] = best_seqs_dict[j-1] + [l[i]]
+                        input('replaced a not best')
+                        print(best_seqs_dict)
+                        break
+                else:
+                    if l[i]>best_seqs_dict[1][0]: # if it does get to this then this is trivially satisfied
+                        best_seqs_dict[1] = [l[i]]    
+                        print('replaced 1')
+                        input(best_seqs_dict)
+    return best_seqs_dict     
+
+
+
+
+
+l = [0,8,4,12,2,10,6,14,1,9,5,13,3,11,7,15]
+
+print(LIS(l))
+print(LIS_new(l))
+
+input('asdgf')
 
 def LMS(l):
     """
@@ -157,6 +175,8 @@ def M_N(n):
 
 # for i in range(11,16):
 #     print(M_N(i))
+
+
 
 print(M_N(12))
 
